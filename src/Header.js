@@ -1,0 +1,202 @@
+import {useEffect, useState} from 'react';
+import firebase from 'firebase/compat/app';
+import {auth, storage, db} from './firebase'
+
+
+
+
+//Usando o user como parâmetro
+function Header(props){
+
+    const [progress, setProgress] = useState(0)
+    const [file, setFile] = useState(null)
+    
+
+
+
+    //Usando para fazer o login
+    function logar(e){
+        e.preventDefault()
+
+        let email = document.getElementById('email-login').value
+        let senha = document.getElementById('senha-login').value
+
+        auth.signInWithEmailAndPassword(email, senha)
+        .then((auth) => {
+            props.setUser(auth.user.displayName)
+            alert('Logado com sucesso!')
+            window.location.href = "/"
+        }).catch((error) =>{
+            alert(error.message)
+        })
+    }
+
+
+    //Usado para o processo de criação de conta
+    function criarConta(e){
+        e.preventDefault();
+
+        let email = document.getElementById('email-cadastro').value
+        let username = document.getElementById('user-cadastro').value
+        let senha = document.getElementById('senha-cadastro').value
+
+        auth.createUserWithEmailAndPassword(email, senha)
+        .then((authUser) =>{
+            authUser.user.updateProfile({
+                displayName: username
+            })
+
+            alert('Conta criada com sucesso!')
+
+            let modal = document.querySelector('.modalCriarConta')
+            modal.style.display = "none"
+        }).catch((error) =>{
+            alert(error.message)
+        })
+    }
+
+    //Abre o modal para uploads
+    function abrirModalUpload(e){
+      e.preventDefault();
+        
+      let modal = document.querySelector('.modalUpload')
+
+      modal.style.display = "block"
+    }
+
+    //Abre o modal de upload
+    function fecharModalUpload(){
+        
+      let modal = document.querySelector('.modalUpload')
+
+      modal.style.display = "none"
+    }
+
+    //Realiza o post
+    function uploadPost(e){
+      e.preventDefault();
+      let tituloPost = document.getElementById('titulo-upload').value
+
+      const uploadTask = storage.ref(`images/${file.name}`).put(file)
+
+
+      uploadTask.on("state_changed", function (snapshot){
+        const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes ) * 100;
+        setProgress(progress)
+
+      }, function (error) {
+
+      }, function (){
+
+        //Retorna a URL da imagem que foi colocada para ser usado posteriormente
+        storage.ref("images").child(file.name).getDownloadURL()
+        .then(function(url){
+          //Insere a imagem no banco de dados
+          db.collection('posts').add({
+            titulo: tituloPost,
+            image: url,
+            userName: props.user,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          })
+
+          setProgress(0)
+          setFile(null)
+
+          alert('Upload efetuado com sucesso!')
+
+          document.getElementById('form-upload').reset()
+          fecharModalUpload()
+        })
+
+      })
+
+    }
+
+    //Abrir o modal para a criação da conta
+    function abrirModalDisparar(e){
+        e.preventDefault();
+        
+        let modal = document.querySelector('.modalCriarConta')
+        modal.style.display = "block"
+    }
+
+    //Usado para fechar o modal para a criação de conta
+    function fecharModalDisparar(){
+        
+        let modal = document.querySelector('.modalCriarConta')
+        modal.style.display = "none"
+    }
+
+    function deslogar(e){
+      e.preventDefault()
+      auth.signOut().then(function(val){
+        props.setUser(null)
+        window.location.href = "/"
+      })
+    }
+
+    return(
+
+        <div className="header">
+
+        <div className='modalCriarConta'> 
+            <div className='formCriarConta'>
+                <div onClick={(e) => fecharModalDisparar()} className='close-ModalCriar'>X</div>
+                <h4>Criar Conta</h4>
+                <form onSubmit={(e) => criarConta(e)}>
+                    <input id='email-cadastro' type='text' placeholder='Seu e-mail...'/>
+                    <input id='user-cadastro' type='text' placeholder='Seu Usuário...'/>
+                    <input id='senha-cadastro' type='password' placeholder='Sua senha...'/>
+                    <input type='submit' value="Confirmar!"/>
+                </form>
+
+            </div>
+        </div>
+
+        <div className='modalUpload'> 
+            <div className='formUpload'>
+                <div onClick={() => fecharModalUpload()} className='close-ModalUpload'>X</div>
+                <h4>Compartilhe!</h4>
+                <form id='form-upload' onSubmit={(e) => uploadPost(e)}>
+                  <progress id='progress-upload' value={progress}></progress>
+                    <input id='titulo-upload' type='text' placeholder='Título para o post'/>
+                    <input onChange={(e) => setFile(e.target.files[0])} type='file' name='file'/>
+                    <input type='submit' value="Postar!"/>
+                </form>
+
+            </div>
+        </div>
+
+        <div className='center'>
+          <div className='header_logo' >
+            <a href=''> <img src='https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png'></img> </a>
+          </div>
+
+          {
+            //Usando um "If(usuário estiver logado)"
+            (props.user)?
+            <div className='header_logadoInfo'> 
+              <span> Olá,<b> {props.user}</b> </span>
+              <a className='btnLogar' onClick={(e) => abrirModalUpload(e)}> Postar </a>
+              <a className='btnDeslogar' onClick={(e) => deslogar(e)}> Deslogar </a>
+            </div>
+            
+            :
+            //Usando um "else"
+            <div className='header_loginForm'>
+            <form onSubmit={(e) => logar(e)}>
+              <input id='email-login' type='text' placeholder='E-mail...'/>
+              <input id='senha-login' type='password' placeholder='Senha...'/>
+              <input type='submit' name='logar' value='Entrar'/>
+              <a onClick={(e) => abrirModalDisparar(e)} href='#'> Criar conta </a>
+            </form>
+          </div>
+          }
+
+        </div>
+      </div>
+    )
+}
+
+export default Header
+

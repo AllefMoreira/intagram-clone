@@ -1,0 +1,324 @@
+.App{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: rgb(233, 233, 233);
+}
+
+.center{
+  width: 300px;
+}
+
+.header{
+  position: fixed;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  border-right: 1px solid rgba(0, 0, 0, 0.274);
+  padding: 10px 0;
+  width: 15%;
+  height: 100%;
+  background-color: white;
+  border-bottom:1px solid rgb(129, 129, 129) ;
+}
+
+.header_logo{
+  flex-wrap: wrap;
+  width: 100%;
+  text-align: center;
+}
+
+
+.header_loginForm{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 80%;
+}
+
+.header_loginForm input[type=text],
+.header_loginForm input[type=password]{
+  margin-top: 10px;
+  text-align: left;
+  margin-left: 30px;
+  border-radius: 10px;
+  width: 80%;
+  height: 30px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  padding-left: 5px;
+}
+
+.header_loginForm input[type=submit]{
+  margin-top: 10px;
+  text-align: center;
+  margin-left: 35%;
+  border-radius: 10px;
+  background-color: white;
+  color:  black;
+  width: 70px;
+  height: auto;
+  border: 1px solid rgba(133, 133, 133, 0.432);
+  cursor: pointer;
+  padding: 4px 10px;
+  font-size: 15px;
+  border-radius: 5px;
+}
+
+.header_loginForm a{
+  display: flex;
+  margin-top: 10px;
+  text-align: center;
+  margin-left: 34%;
+}
+
+
+.header_loginForm form{
+  flex-wrap: wrap;
+  display:inline-block;
+  max-height: 50px;
+}
+
+
+
+.btn_criarConta a{
+  font-size: 15px;
+  margin: 0 10px;
+}
+
+.header_logadoInfo{
+  flex-wrap: wrap;
+  display:inline-block;
+  text-align: center;
+  margin-top: 10px;
+  width: 100%;
+  height: 80%;
+}
+
+.header_logadoInfo span{
+  flex-wrap: wrap;
+  text-align: center;
+  background-color: white;
+  color:  black;
+  width: 100%;
+  padding: 5px ;
+  padding-left: 10px;
+  font-size: 40px;
+
+}
+
+.btnLogar{
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5%;
+  margin-left: 33.3%;
+  margin-right: 33.3%;
+  background-color: white;
+  border-radius: 10px;
+  color:  black;
+  cursor: pointer;
+  padding-left: 5px;
+  font-size: 30px;
+
+ 
+}
+
+.header_logadoInfo .btnDeslogar{
+  display: flex;
+  flex-wrap: wrap;
+  width: 45%;
+  margin-top: 5%;
+  margin-left: 28%;
+  margin-right: 33.3%;
+  background-color: white;
+  border-radius: 10px;
+  color:  black;
+  cursor: pointer;
+  padding-left: 5px;
+  font-size: 30px;
+}
+
+.header_logadoInfo a:hover{
+  background-color: rgb(216, 216, 216)
+}
+
+
+
+
+.modalCriarConta{
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.formCriarConta{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 10px;
+}
+
+.formCriarConta input[type=text],
+.formCriarConta input[type=submit]{
+  width: 100%;
+  height: 30px;
+  margin-right: 5px;
+  margin-top: 10px;
+  padding-left: 3px;
+  border-radius: 5px;
+  border: 1px solid grey;
+}
+
+.formCriarConta input[type=submit]{
+  cursor: pointer;
+}
+
+.formCriarConta input[type=password]{
+  width: 50%;
+  height: 30px;
+  margin-right: 5px;
+  margin-top: 10px;
+  padding-left: 3px;
+  border-radius: 5px;
+  border: 1px solid grey;
+}
+
+.close-ModalCriar{
+  position: absolute;
+  right: 5px;
+  top: 0;
+  width: 20px;
+  cursor: pointer;
+}
+
+.modalUpload{
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.formUpload{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 10px;
+}
+
+.formUpload input[type=text],
+.formUpload input[type=submit]{
+  width: 100%;
+  height: 30px;
+  margin-right: 5px;
+  margin-top: 10px;
+  padding-left: 3px;
+  border-radius: 5px;
+  border: 1px solid grey;
+}
+
+.formUpload input[type=submit]{
+  cursor: pointer;
+}
+
+.formUpload input[type=file]{
+  margin-top: 15px;
+
+}
+
+.modalUpload h4{
+  text-align: center;
+}
+
+.modalUpload progress{
+  width: 100%;
+  
+}
+
+.close-ModalUpload{
+  position: absolute;
+  right: 5px;
+  top: 0;
+  width: 20px;
+  cursor: pointer;
+}
+
+.postSingle{
+  flex-wrap: wrap;
+  background-color: white;
+  width: 30%;
+  height: auto;
+  margin-top: 1%;
+  margin-left: 30%;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.199);
+  margin-bottom: 1%;
+  padding: 10px;
+}
+
+.postSingle img{
+  width: 100%;
+  padding: 10px;
+  
+}
+
+.postSingle p{
+  font-size: 20px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.411);
+}
+
+.postSingle form{
+  padding: 10px;
+}
+
+.form-comentario{
+  display: flex;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 35px;
+  margin: 5px;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.postSingle input[type=text]{
+  width: 75%;
+  padding: 2px;
+  border-radius: 5px;
+  margin-right: 60px;
+  border: 0;
+}
+
+.postSingle input[type=submit]{
+  width: 10%;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+  border: 0;
+}
+
